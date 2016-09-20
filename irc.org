@@ -1,0 +1,4 @@
+** Define function for loading encrypted IRC information
+#+BEGIN_SRC elisp
+(defun my-load-irc-gpg () (interactive) (load "irc.el.gpg"))
+#+END_SRC

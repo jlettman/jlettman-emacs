@@ -1,0 +1,62 @@
+#+TITLE: Personal GNU Emacs Configuration File
+#+AUTHOR: John Lettman
+#+LANGUAGE: en
+
+* Packages & Beginnings
+** Startup packages
+*** Load important packages first
+Load and initialize some packages that are important.
+
+#+BEGIN_SRC elisp
+(require 'cl)
+(require 'cl-lib)
+(require 'saveplace)
+(require 'ffap)
+(require 'uniquify)
+(require 'ansi-color)
+(require 'recentf)
+(require 'package)
+#+END_SRC
+
+** Initialize Package-Install
+#+BEGIN_SRC elisp
+
+#+END_SRC
+
+** GNU Emacs core
+*** Fix GC stop trigger (0.76 MB to 100 MB)
+#+BEGIN_SRC elisp
+(setq gc-cons-threshold (* 100 1000 1000))
+#+END_SRC
+
+*** TODO Set identity
+#+BEGIN_SRC elisp
+(setq
+  my-full-name "Bob Example"
+  my-email-address "bob@example.com"
+  my-email-signature "Hello World")
+#+END_SRC
+
+*** Start GNU Emacs server
+#+BEGIN_SRC elisp
+(if (not server-mode)
+    (server-start nil t))
+#+END_SRC
+
+* Encryption
+#+INCLUDE: encryption.org
+
+* UI
+#+INCLUDE: ui.org
+
+* Email
+#+INCLUDE: email.org
+
+* IRC
+#+INCLUDE: irc.org
+
+* org-mode
+#+INCLUDE: org.org
+
+* Documents
+#+INCLUDE: documents.org

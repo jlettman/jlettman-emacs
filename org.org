@@ -1,0 +1,106 @@
+** org-mode TODO sequence
+#+BEGIN_SRC elisp
+(setq org-todo-keywords
+        '((sequence "TODO" "WAITING" "DONE")))
+#+END_SRC
+
+** Display inline media
+#+BEGIN_SRC elisp
+(add-hook 'org-babel-after-execute-hook 'org-display-inline-images)
+(add-hook 'org-mode-hook 'org-display-inline-images)
+(add-hook 'org-mode-hook 'org-babel-result-hide-all)
+#+END_SRC
+
+** Source blocks and org-babel
+*** Source highlighting in source blocks
+Source blocks will be themed according to their mode.
+
+#+BEGIN_SRC elisp
+(setq org-src-fontify-natively t
+      org-src-tab-acts-natively t
+      org-confirm-babel-evaluate nil
+      org-edit-src-content-indentation 0)
+#+END_SRC
+
+*** Quick source blocks
+*** Base source block
+Type =<S= and press =TAB=.
+
+#+BEGIN_SRC elisp
+(add-to-list 'org-structure-template-alist
+        '("S" "#+begin_src ?\n\n#+end_src" "<src lang=\"?\">\n\n</src>"))
+#+END_SRC
+
+*** Python source block
+Type =<p= and press =TAB=.
+
+#+BEGIN_SRC elisp
+(add-to-list 'org-structure-template-alist
+        '("p" "#+begin_src python :results output :exports both\n\n#+end_src" "<src lang=\"python\">\n\n</src>"))
+#+END_SRC
+
+Type =<P= and press =TAB= for =*python*= session, output results,
+and =both= export.
+
+#+BEGIN_SRC elisp
+(add-to-list 'org-structure-template-alist
+        '("P" "#+begin_src python :results output :session *python* :exports both\n\n#+end_src" "<src lang=\"python\">\n\n</src>"))
+#+END_SRC
+
+*** Shell source block
+Type =<b= and press =TAB=.
+
+#+BEGIN_SRC elisp
+(add-to-list 'org-structure-template-alist
+        '("b" "#+begin_src sh :results output :exports both\n\n#+end_src" "<src lang=\"sh\">\n\n</src>"))
+#+END_SRC
+
+#+BEGIN_SRC elisp
+(add-to-list 'org-structure-template-alist
+        '("B" "#+begin_src sh :session foo :results output :exports both \n\n#+end_src" "<src lang=\"sh\">\n\n</src>"))
+#+END_SRC
+
+*** GraphViz source block
+Press =<g= and press =TAB=.
+
+#+BEGIN_SRC elisp
+(add-to-list 'org-structure-template-alist
+        '("g" "#+begin_src dot :results output graphics :file \"/tmp/graph.pdf\" :exports both
+   digraph G {
+      node [color=black,fillcolor=white,shape=rectangle,style=filled,fontname=\"Helvetica\"];
+      A[label=\"A\"]
+      B[label=\"B\"]
+      A->B
+   }\n#+end_src" "<src lang=\"dot\">\n\n</src>"))
+#+END_SRC
+
+
+
+
+*** org-babel evaluate entire tree
+#+BEGIN_SRC elisp
+(global-set-key (kbd "C-c S-t") 'org-babel-execute-subtree)
+#+END_SRC
+
+*** org-babel language support
+#+BEGIN_SRC elisp
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '(
+   (shell . t)
+   (python . t)
+   (R . t)
+   (ruby . t)
+   (ocaml . t)
+   (ditaa . t)
+   (dot . t)
+   (octave . t)
+   (sqlite . t)
+   (perl . t)
+   (screen . t)
+   (plantuml . t)
+   (lilypond . t)
+   (org . t)
+   (makefile . t)))
+(setq org-src-preserve-indentation t)
+#+END_SRC

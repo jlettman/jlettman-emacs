@@ -1,0 +1,6 @@
+** Enable GPG encryption
+#+BEGIN_SRC elisp
+(require 'epa)
+(epa-file-enable)
+(setq epg-gpg-program "gpg")
+#+END_SRC

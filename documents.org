@@ -1,0 +1,10 @@
+** Viewing documents
+*** Use PDFTools for viewing PDF files
+Associate PDFTools for PDF files and run =pdf-tools-install= when the
+mode is first started. This will offset the initial installation time
+which is said to be hefty.
+
+#+BEGIN_SRC elisp
+(add-hook 'pdf-tools-enabled-hook 'auto-revert-mode)
+(add-to-list 'auto-mode-alist '("\\.pdf\\'" . pdf-tools-install))
+#+END_SRC

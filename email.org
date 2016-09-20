@@ -1,0 +1,62 @@
+** Setup basic e-mail identity
+#+BEGIN_SRC elisp
+(setq
+  ;; Set public name
+  user-full-name 'my-full-name
+
+  ;; Set e-mail address
+  user-mail-address 'my-email-address
+
+  ;; Set e-mail signature
+  message-signature 'my-email-signature)
+#+END_SRC
+
+** Require e-mail packages
+#+BEGIN_SRC elisp
+(require 'gnus)
+#+END_SRC
+
+** Local e-mail storage directory
+#+BEGIN_SRC elisp
+;; E-mail directories
+(setq nnml-directory "~/Documents/News")
+(setq message-directory "~/Documents/E-mail")
+#+END_SRC
+
+** TODO Configure IMAP for fetching e-mails
+#+BEGIN_SRC elisp
+;; IMAP
+(setq gnus-select-method
+      '(nnimap "gmail"
+               (nnimap-address "imap.gmail.com")
+               (nnimap-server-port 993)
+               (nnimap-stream ssl)))
+#+END_SRC
+
+** TODO Configure SMTP for fetching e-mails
+#+BEGIN_SRC elisp
+;; SMTP
+(setq message-send-mail-function 'smtpmail-send-it
+      smtpmail-starttls-credentials '(("smtp.gmail.com" 587 nil nil))
+      smtpmail-auth-credentials '(("smtp.gmail.com" 587 "your-name@gmail.com" nil))
+      smtpmail-default-smtp-server "smtp.gmail.com"
+      smtpmail-smtp-server "smtp.gmail.com"
+      smtpmail-smtp-service 587)
+#+END_SRC
+
+** Setup big-brother database
+#+BEGIN_SRC elisp
+;; Big-Brother Database (BBDB)
+;; Organizes, files, and lists contacts
+(require 'bbdb)
+(require 'bbdb-autoloads)
+
+(setq
+ bbdb-file "~/Documents/Contacts.bbdb"
+ bbdb-offer-save 'auto
+ bbdb-notice-auto-save-file t
+ bbdb-expand-mail-aliases t
+ bbdb-canonicalize-redundant-nets-p t
+ bbdb-always-add-addresses f
+ bbdb-complete-name-allow-cycling t)
+#+END_SRC

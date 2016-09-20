@@ -1,0 +1,127 @@
+** General User Interface
+*** Set GNU Emacs titlebar string
+#+BEGIN_SRC elisp
+;; Set GNU Emacs titlebar string
+(setq frame-title-format
+  '("Emacs - " (buffer-file-name "%f"
+    (dired-directory dired-directory "%b"))))
+#+END_SRC
+
+*** Disable toolbar and scrollbars
+Hide the toolbar as we can ultimately use the menu if we're totally lost
+and hide the scollbars to look more... =1337= :)
+
+#+BEGIN_SRC elisp
+(tool-bar-mode -1)   ;; no toolbar
+(scroll-bar-mode -1) ;; no scrollbars
+#+END_SRC
+
+*** Show lines exceeding 80 characters
+#+BEGIN_SRC elisp
+(require 'fill-column-indicator)
+#+END_SRC
+
+*** Increase / Decrease text size
+Allows you to increase or decrease the text size of a buffer using the
+=C-+= and =C--= keybindings. Useful for presentations to others on the
+fly.
+
+#+BEGIN_SRC elisp
+;; Increase / Decrease text size
+(global-set-key (kbd "C-+") 'text-scale-increase)
+(global-set-key (kbd "C--") 'text-scale-decrease)
+;; Note: 'C-x C-0' restores the default font size
+#+END_SRC
+
+*** Increase / Decrease text size globally
+#+BEGIN_SRC elisp
+(lexical-let* ((default (face-attribute 'default :height))
+               (size default))
+
+  (defun global-scale-default ()
+    (interactive)
+    (setq size default)
+    (global-scale-internal size))
+
+  (defun global-scale-up ()
+    (interactive)
+    (global-scale-internal (incf size 20)))
+
+  (defun global-scale-down ()
+    (interactive)
+    (global-scale-internal (decf size 20)))
+
+  (defun global-scale-internal (arg)
+    (set-face-attribute 'default (selected-frame) :height arg)
+    (set-temporary-overlay-map
+     (let ((map (make-sparse-keymap)))
+       (define-key map (kbd "C-=") 'global-scale-up)
+       (define-key map (kbd "C-+") 'global-scale-up)
+       (define-key map (kbd "C--") 'global-scale-down)
+       (define-key map (kbd "C-0") 'global-scale-default) map))))
+#+END_SRC
+
+** Input
+*** Mouse-based mark and yank
+Reference: [[http://stackoverflow.com/questions/13036155/how-to-combine-emacs-primary-clipboard-copy-and-paste-behavior-on-ms-windows][StackOverflow]]
+
+#+BEGIN_SRC elisp
+;; Mouse-based mark and yank
+;; (for the lazy like myself)
+(setq select-active-regions nil)
+(setq x-select-enable-primary t)
+(setq x-select-enable-clipboard t)
+(setq mouse-drag-copy-region t)
+(global-set-key [mouse-2] 'mouse-yank-at-click)
+#+END_SRC
+
+*** Xorg clipboard in no-window mode
+Reference: StackOverflow
+
+#+BEGIN_SRC elisp
+;; Xorg clipboard in no-window mode
+(require (quote xclip))
+       (xclip-mode 1)
+#+END_SRC
+
+*** Quicker Yes / No prompts
+#+BEGIN_SRC elisp
+;; Quicker Yes / No prompts
+(defalias 'yes-or-no-p 'y-or-n-p)
+#+END_SRC
+
+*** Always use UTF-8
+#+BEGIN_SRC elisp
+;; Prefer UTF-8 encoding
+(set-terminal-coding-system 'utf-8)
+(set-keyboard-coding-system 'utf-8)
+(prefer-coding-system 'utf-8)
+#+END_SRC
+
+
+** Programming
+*** Highlight parenthesis
+Automatically match parens with each other visually.
+
+#+BEGIN_SRC elisp
+;; Highlight parenthesis
+(show-paren-mode 1)
+(transient-mark-mode t)
+(require 'paren)
+#+END_SRC
+
+*** Global goto-line
+Press =M-g= to instantly jump to a line number in any buffer.
+
+#+BEGIN_SRC elisp
+;; Global goto line shortcut
+(global-set-key "\M-g" 'goto-line)
+#+END_SRC
+
+** Spelling
+*** Check spelling with FlySpell
+#+BEGIN_SRC elisp
+(define-key global-map (kbd "C-c s r") 'flyspell-region)
+(define-key global-map (kbd "C-c s b") 'flyspell-buffer)
+(define-key global-map (kbd "C-c s s") 'flyspell-mode)
+#+END_SRC
